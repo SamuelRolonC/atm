@@ -1,0 +1,56 @@
+// Source code to draw the database diagram on https://dbdiagram.io/
+
+// https://dbdiagram.io/
+
+Table card {
+  id integer [primary key]
+  number varchar(16)
+  pin varchar(4)
+  userId integer
+  dueDate date
+  balance decimal
+  isBlocked boolean
+  failAttempts integer
+  active boolean  
+  createdBy varchar(100)
+  createdAt timestamp
+  updatedBy varchar(100)
+  updatedAt timestamp 
+}
+
+Table user {
+  id integer [primary key]
+  name varchar
+  surname varchar
+  identityNumber integer
+  active boolean
+  createdBy varchar(100)
+  createdAt timestamp
+  updatedBy varchar(100)
+  updatedAt timestamp 
+}
+
+Table operation {
+  id integer [primary key]
+  cardId integer
+  amount decimal
+  dateTime timestamp
+  operationTypeId integer
+}
+
+Table operationType {
+  id integer [primary key]
+  description varchar(100)
+  code varchar(20)
+  active boolean
+  createdBy varchar(100)
+  createdAt timestamp
+  updatedBy varchar(100)
+  updatedAt timestamp 
+}
+
+Ref: user.id < card.userId
+
+Ref: card.id < operation.cardId
+
+Ref: operation.operationTypeId > operationType.id
