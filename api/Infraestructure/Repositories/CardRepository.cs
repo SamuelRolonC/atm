@@ -1,41 +1,24 @@
 ﻿using Core;
+using Core.Entities;
 using Core.Interfaces.Repositories;
 using Core.Models;
 using Infraestructure.Data;
 using Microsoft.EntityFrameworkCore;
-using System.Net.NetworkInformation;
 
 namespace Infraestructure.Repositories
 {
-    public class CardRepository : SetAttempts
+    public class CardRepository : ICardRepository
     {
-        public async Task<CardNumberResultModel> ValidateNumberAsync(string number)
+        public async Task<Card> GetCardByNumberAsync(string number)
         {
-            using (var context = new AtmContext())
-            {
-                var card = await context.Cards.FirstOrDefaultAsync(c => c.Number == number && c.Active && !c.IsBlocked);
-
-                return new CardNumberResultModel
-                {
-                    CardId = card != null ? card.Id : 0,
-                    IsValid = card != null,
-                    Message = card != null ? string.Empty : "Card not found"
-                };
-            }
+            using var context = new AtmContext();
+            return await context.Cards.FirstOrDefaultAsync(c => c.Number == number && c.Active && !c.IsBlocked);
         }
 
-        public async Task<ValidateCardResultModel> ValidatePinAsync(int id, string pin)
+        public async Task<Card> GetCardByIdAsync(int id)
         {
-            using (var context = new AtmContext())
-            {
-                var isValidPin = await context.Cards.AnyAsync(c => c.Id == id && c.Pin == pin && c.Active && !c.IsBlocked);
-
-                return new ValidateCardResultModel
-                {
-                    IsValid = isValidPin,
-                    Message = isValidPin ? string.Empty : "Card not found"
-                };
-            }
+            using var context = new AtmContext();
+            return await context.Cards.FirstOrDefaultAsync(c => c.Id == id && c.Active && !c.IsBlocked);
         }
 
         public async Task SetAttempts(int id, bool isValid)
@@ -58,6 +41,19 @@ namespace Infraestructure.Repositories
 
                 await context.SaveChangesAsync();
             }
+        }
+
+        public async Task<List<Card>> GetAllCardsAsTrackingAsync()
+        {
+            using var context = new AtmContext();
+            return await context.Cards.AsTracking().ToListAsync();
+        }
+
+        public async Task UpdateCards(IEnumerable<Card> cards)
+        {
+            using var context = new AtmContext();
+            context.Cards.UpdateRange(cards);
+            await context.SaveChangesAsync();
         }
     }
 }

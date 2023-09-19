@@ -7,7 +7,7 @@ namespace Atm.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    public class HomeController : Controller
+    public class HomeController : ControllerBase
     {
         private readonly ICardService _cardService;
         private readonly ILogger<HomeController> _logger;
@@ -44,7 +44,7 @@ namespace Atm.Controllers
         {
             try
             {
-                ValidateCardResultModel resultModel = await _cardService.ValidatePinAsync(cardModel.Id, cardModel.Pin);
+                CardPinResultModel resultModel = await _cardService.ValidatePinAsync(cardModel.Id, cardModel.Pin);
                 return Ok(resultModel);
             }
             catch (Exception ex)

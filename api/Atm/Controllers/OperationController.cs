@@ -19,12 +19,12 @@ namespace Atm.Controllers
         }
 
         [HttpGet(nameof(Balance))]
-        public async Task<IActionResult> Balance(int cardId)
+        public async Task<IActionResult> Balance(int id)
         {
             var resultModel = new BalanceResultModel();
             try
             {
-                resultModel = await _operationService.BalanceAsync(cardId);
+                resultModel = await _operationService.BalanceAsync(id);
             }
             catch (Exception ex)
             {

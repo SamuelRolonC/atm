@@ -26,6 +26,8 @@ namespace Infraestructure.Repositories
 
                 return new BalanceResultModel
                 {
+                    CardNumber = card != null ? card.Number : string.Empty,
+                    CardDueDate = card != null ? card.DueDate.ToString("dd/MM/yyyy") : string.Empty,
                     CardBalance = card != null ? card.Balance : 0,
                     Success = card != null,
                     Message = card != null ? string.Empty : "No se encontraron datos para la operación."

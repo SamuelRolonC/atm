@@ -10,6 +10,7 @@ namespace Core.Interfaces.Services
     public interface ICardService
     {
         public Task<CardNumberResultModel> ValidateNumberAsync(string number);
-        public Task<ValidateCardResultModel> ValidatePinAsync(int id, string pin);
+        public Task<CardPinResultModel> ValidatePinAsync(int id, string pin);
+        public Task SetHashField();
     }
 }
