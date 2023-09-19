@@ -1,6 +1,7 @@
 import React from 'react';
 import './Home.css';
 import { InputAndKeyboard } from '../InputAndKeyboard';
+import { cardFormat } from '../Helpers/utils';
 
 function Home() {
     
@@ -28,16 +29,22 @@ function Home() {
         return '/Card/Error';
     }
 
+    const applyFormat = (value) => {
+        return cardFormat(value);
+    }
+
     const inputAndKeyboardItem = {
         format: 'card',
         urlToSubmit: 'https://localhost:44343/Home/CardNumber',
         showLabel: true,
         labelText: 'El número de tarjeta debe tener 16 dígitos',
+        inputType: 'text',
         isValidInputValue: isValidInputValue,
         getObfuscatedValue: getObfuscatedValue,
         getBody: getBody,
         getNavigateOnSuccess: getNavigateOnSuccess,
-        getNavigateOnError: getNavigateOnError
+        getNavigateOnError: getNavigateOnError,
+        applyFormat: applyFormat
     };
 
 

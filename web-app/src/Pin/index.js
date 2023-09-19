@@ -24,22 +24,28 @@ function Pin() {
     }
 
     const getNavigateOnSuccess = (data) => {
-        return '/Operation/Menu';
+        return '/Operation/Menu/' + data.cardId;
     }
 
     const getNavigateOnError = (data) => {
         return '/Card/Error';
     }
 
+    const applyFormat = (value) => {
+        return value;
+    }
+
     const inputAndKeyboardItem = {
         format: 'pin',
         urlToSubmit: 'https://localhost:44343/Home/CardPin',
         showLabel: false,
+        inputType: 'password',
         isValidInputValue: isValidInputValue,
         getObfuscatedValue: getObfuscatedValue,
         getBody: getBody,
         getNavigateOnSuccess: getNavigateOnSuccess,
-        getNavigateOnError: getNavigateOnError
+        getNavigateOnError: getNavigateOnError,
+        applyFormat: applyFormat
     };
 
     return (

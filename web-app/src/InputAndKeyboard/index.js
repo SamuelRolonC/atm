@@ -11,6 +11,9 @@ function InputAndKeyboard(props) {
     const getBody = props.item.getBody;
     const getNavigateOnSuccess = props.item.getNavigateOnSuccess;
     const getNavigateOnError = props.item.getNavigateOnError;
+    const applyFormat = props.item.applyFormat;
+
+    const inputType = props.item.inputType;
 
     const onSubmit = (event) => {
         event.preventDefault();
@@ -67,34 +70,13 @@ function InputAndKeyboard(props) {
         setInputValue('');
     }
 
-    const cardFormat = (value) => {
-        const v = value
-          .replace(/\s+/g, "")
-          .replace(/[^0-9]/gi, "")
-          .substr(0, 16);
-        const parts = [];
-      
-        for (let i = 0; i < v.length; i += 4) {
-          parts.push(v.substr(i, 4));
-        }
-      
-        return parts.length > 1 ? parts.join(" ") : value;
-    }
-
-    const applyFormat = (value, format) => {
-        if (format === 'card')
-            return cardFormat(value);
-        else
-            return value;
-    }
-
     return(
         <div id="InputAndKeyboard">
             <form onSubmit={onSubmit}>
                 <div id="inputValueContainer">
-                    <input type="text" 
+                    <input type={inputType} 
                         name="inputValue" 
-                        value={applyFormat(inputValue, props.item.format)}
+                        value={applyFormat(inputValue)}
                         onChange={onChangeInputValue} 
                         disabled={true} />
                     <button 

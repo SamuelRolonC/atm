@@ -5,6 +5,7 @@ import { Home } from '../Home/Index';
 import { Pin } from '../Pin';
 import { CardError } from '../CardError';
 import { OperationMenu } from '../OperationMenu';
+import { OperationBalance } from '../OperationBalance';
 
 function AppUI() {
 
@@ -16,7 +17,8 @@ function AppUI() {
             <Route path='/Card' element={<Home />} />
             <Route path='/Card/Login/:id' element={<Pin />} />
             <Route path='/Card/Error' element={<CardError />} />
-            <Route path='/Operation/Menu' element={<OperationMenu />} />
+            <Route path='/Operation/Menu/:id' element={<OperationMenu />} />
+            <Route path='/Operation/Balance/:id' element={<OperationBalance />} />
         </Routes>
     </div>
   );
