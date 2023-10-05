@@ -9,51 +9,51 @@ namespace Infraestructure.Repositories
 {
     public class CardRepository : ICardRepository
     {
+        private readonly AtmContext _context;
+
+        public CardRepository(AtmContext context)
+        {
+            _context = context;
+        }
+
         public async Task<Card> GetCardByNumberAsync(string number)
         {
-            using var context = new AtmContext();
-            return await context.Cards.FirstOrDefaultAsync(c => c.Number == number && c.Active && !c.IsBlocked);
+            return await _context.Cards.FirstOrDefaultAsync(c => c.Number == number && c.Active && !c.IsBlocked);
         }
 
         public async Task<Card> GetCardByIdAsync(int id)
         {
-            using var context = new AtmContext();
-            return await context.Cards.FirstOrDefaultAsync(c => c.Id == id && c.Active && !c.IsBlocked);
+            return await _context.Cards.FirstOrDefaultAsync(c => c.Id == id && c.Active && !c.IsBlocked);
         }
 
         public async Task SetAttempts(int id, bool isValid)
         {
-            using (var context = new AtmContext())
+            var card = await _context.Cards.AsTracking().FirstOrDefaultAsync(c => c.Id == id);
+            if (card == null)
+                throw new Exception("Card not found");
+
+            if (isValid)
+                card.FailAttempts = 0;
+            else
             {
-                var card = await context.Cards.AsTracking().FirstOrDefaultAsync(c => c.Id == id);
-                if (card == null)
-                    throw new Exception("Card not found");
-
-                if (isValid)
-                    card.FailAttempts = 0;
+                if (card.FailAttempts >= SystemParameters.Card.MaxFailedAttempts)
+                    card.IsBlocked = true;
                 else
-                {
-                    if (card.FailAttempts >= SystemParameters.Card.MaxFailedAttempts)
-                        card.IsBlocked = true;
-                    else
-                        card.FailAttempts++;
-                }
-
-                await context.SaveChangesAsync();
+                    card.FailAttempts++;
             }
+
+            await _context.SaveChangesAsync();
         }
 
         public async Task<List<Card>> GetAllCardsAsTrackingAsync()
         {
-            using var context = new AtmContext();
-            return await context.Cards.AsTracking().ToListAsync();
+            return await _context.Cards.AsTracking().ToListAsync();
         }
 
         public async Task UpdateCards(IEnumerable<Card> cards)
         {
-            using var context = new AtmContext();
-            context.Cards.UpdateRange(cards);
-            await context.SaveChangesAsync();
+            _context.Cards.UpdateRange(cards);
+            await _context.SaveChangesAsync();
         }
     }
 }

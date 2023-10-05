@@ -1,6 +1,9 @@
+using Core;
 using Core.Interfaces.Repositories;
 using Core.Interfaces.Services;
+using Infraestructure.Data;
 using Infraestructure.Repositories;
+using Microsoft.EntityFrameworkCore;
 using Serilog;
 using Service;
 
@@ -33,7 +36,8 @@ builder.Services.AddCors(o => o.AddPolicy("NoCors", builder =>
            .AllowAnyHeader();
 }));
 
-builder.Configuration.GetConnectionString("AtmContext");
+builder.Services.AddDbContext<AtmContext>(options =>
+    options.UseSqlServer(builder.Configuration.GetConnectionString(SystemParameters.ConnectionString.AtmContext)));
 
 var app = builder.Build();
 
