@@ -22,11 +22,11 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-builder.Services.AddTransient<Core.Interfaces.Repositories.ICardRepository, CardRepository>();
+builder.Services.AddTransient<ICardRepository, CardRepository>();
 builder.Services.AddTransient<IOperationRepository, OperationRepository>();
 builder.Services.AddTransient<IOperationTypeRepository, OperationTypeRepository>();
 
-builder.Services.AddScoped<Core.Interfaces.Services.ICardService, CardService>();
+builder.Services.AddScoped<ICardService, CardService>();
 builder.Services.AddScoped<IOperationService, OperationService>();
 
 builder.Services.AddCors(o => o.AddPolicy("NoCors", builder =>

@@ -2,6 +2,7 @@
 using Core.Entities;
 using Core.Interfaces.Repositories;
 using Core.Models;
+using Core.Utils;
 using Infraestructure.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
@@ -83,7 +84,7 @@ namespace Infraestructure.Repositories
                     CardBalance = card.Balance,
                     CardNumber = card.Number,
                     OperationAmount = operation.Amount ?? 0,
-                    OperationDate = operation.DateTime,
+                    OperationDate = Functions.GetDateTimeString(operation.DateTime),
                     Success = true,
                     Message = string.Empty
                 };

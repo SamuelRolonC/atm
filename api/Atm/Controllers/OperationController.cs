@@ -25,19 +25,16 @@ namespace Atm.Controllers
             try
             {
                 resultModel = await _operationService.BalanceAsync(id);
+                return Ok(resultModel);
             }
             catch (Exception ex)
             {
+                _logger.LogError(ex, "Error en {1}.{2}({3}): ", nameof(OperationController), nameof(Balance), id);
                 resultModel.Success = false;
                 resultModel.Message = "Error al consultar los datos. Intente más tarde.";
 
                 return BadRequest(resultModel);
             }
-
-            if (resultModel.Success)
-                return Ok(resultModel);
-            else
-                return BadRequest(resultModel);
         }
 
         [HttpGet(nameof(Withdraw))]
@@ -47,6 +44,7 @@ namespace Atm.Controllers
             try
             {
                 resultModel = await _operationService.WithdrawAsync(cardId, amount);
+                return Ok(resultModel);
             }
             catch (Exception ex)
             {
@@ -56,11 +54,6 @@ namespace Atm.Controllers
 
                 return BadRequest(resultModel);
             }
-
-            if (resultModel.Success)
-                return Ok(resultModel);
-            else
-                return BadRequest(resultModel);
         }
     }
 }

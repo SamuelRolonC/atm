@@ -11,6 +11,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Core", "Core\Core.csproj", 
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Atm", "Atm\Atm.csproj", "{70F01258-B5F5-4629-B7C2-D34E0151B079}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tests", "AtmTests\Tests.csproj", "{94DFDA90-90FB-480C-98A9-F68CC8A92B1A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,6 +35,10 @@ Global
 		{70F01258-B5F5-4629-B7C2-D34E0151B079}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{70F01258-B5F5-4629-B7C2-D34E0151B079}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{70F01258-B5F5-4629-B7C2-D34E0151B079}.Release|Any CPU.Build.0 = Release|Any CPU
+		{94DFDA90-90FB-480C-98A9-F68CC8A92B1A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{94DFDA90-90FB-480C-98A9-F68CC8A92B1A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{94DFDA90-90FB-480C-98A9-F68CC8A92B1A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{94DFDA90-90FB-480C-98A9-F68CC8A92B1A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

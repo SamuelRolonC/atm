@@ -5,6 +5,10 @@ namespace Infraestructure.Data;
 
 public partial class AtmContext : DbContext
 {
+    public AtmContext()
+    {
+    }
+
     public AtmContext(DbContextOptions<AtmContext> options)
         : base(options)
     {
