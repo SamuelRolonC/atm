@@ -25,7 +25,7 @@ namespace Tests.Service
         {
             // Arrange
             _cardRepositoryMock.Setup(x => x.GetCardByNumberAsync(It.IsAny<string>()))
-                .ReturnsAsync(CardData.GetCardExampleOne());
+                .ReturnsAsync(CardData.GetCardActive());
             
             var cardService = new CardService(_cardRepositoryMock.Object);
 

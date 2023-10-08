@@ -1,16 +1,11 @@
 ﻿using Core.Entities;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Tests.Data
 {
     public class CardData
     {
 
-        public static Card GetCardExampleOne()
+        public static Card GetCardActive()
         {
             return new Card
             {
@@ -24,7 +19,7 @@ namespace Tests.Data
             };
         }
 
-        public static Card GetCardExampleTwo()
+        public static Card GetCardNonActive()
         {
             return new Card
             {
@@ -32,6 +27,8 @@ namespace Tests.Data
                 Number = "2111222233334444",
                 Pin = "1234",
                 Balance = 1000,
+                IsBlocked = false,
+                Active = false,
                 CreatedAt = DateTime.Now,
             };
         }
@@ -40,8 +37,8 @@ namespace Tests.Data
         {
             return new List<Card>
             {
-                GetCardExampleOne(),
-                GetCardExampleTwo()
+                GetCardActive(),
+                GetCardNonActive()
             };
         }
     }
