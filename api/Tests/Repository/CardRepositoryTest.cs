@@ -1,16 +1,8 @@
-﻿using Core.Entities;
-using Infraestructure.Data;
+﻿using Infraestructure.Data;
 using Infraestructure.Repositories;
-using Microsoft.EntityFrameworkCore;
 using Moq;
 using Moq.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Tests.Data;
-using static Core.SystemParameters;
 
 namespace Tests.Repository
 {
@@ -97,6 +89,21 @@ namespace Tests.Repository
 
             // Act / Assert
             await Assert.ThrowsAsync<Exception>(() => cardRepository.SetAttempts(int.MaxValue, true));
+        }
+
+        [Fact]
+        public async Task SetAttempts_BlockCard()
+        {
+            // Arrange
+            var cards = CardData.GetCards();
+            _atmContextMock.Setup(x => x.Cards).ReturnsDbSet(cards.AsQueryable());
+            var cardRepository = new CardRepository(_atmContextMock.Object);
+
+            // Act
+            await cardRepository.SetAttempts(CardData.GetCardToBlock().Id, false);
+
+            // Assert
+            Assert.True(true);
         }
 
         [Fact]

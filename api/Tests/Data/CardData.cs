@@ -33,12 +33,28 @@ namespace Tests.Data
             };
         }
 
+        public static Card GetCardToBlock()
+        {
+            return new Card
+            {
+                Id = 3,
+                Number = "3111222233334444",
+                Pin = "1234",
+                Balance = 1000,
+                IsBlocked = false,
+                Active = true,
+                FailAttempts = 3,
+                CreatedAt = DateTime.Now,
+            };
+        }
+
         public static IEnumerable<Card> GetCards()
         {
             return new List<Card>
             {
                 GetCardActive(),
-                GetCardNonActive()
+                GetCardNonActive(),
+                GetCardToBlock(),
             };
         }
     }

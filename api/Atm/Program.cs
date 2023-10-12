@@ -6,6 +6,7 @@ using Infraestructure.Repositories;
 using Microsoft.EntityFrameworkCore;
 using Serilog;
 using Service;
+using System.Diagnostics.CodeAnalysis;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -57,3 +58,8 @@ app.UseAuthorization();
 app.MapControllers();
 
 app.Run();
+
+[ExcludeFromCodeCoverage]
+public partial class  Program
+{
+}
