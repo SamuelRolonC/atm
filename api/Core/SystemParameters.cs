@@ -12,5 +12,10 @@
         {
             public const int MaxFailedAttempts = 3;
         }
+
+        public struct ConnectionString
+        {
+            public const string AtmContext = "AtmContext";
+        }
     }
 }

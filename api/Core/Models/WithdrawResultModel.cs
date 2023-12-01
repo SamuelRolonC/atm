@@ -10,7 +10,7 @@ namespace Core.Models
     {
         public string CardNumber { get; set; } = string.Empty;
         public decimal CardBalance { get; set; }
-        public DateTime OperationDate { get; set; }
+        public string OperationDate { get; set; } = string.Empty;
         public decimal OperationAmount { get; set; }
 
         public bool Success { get; set; }

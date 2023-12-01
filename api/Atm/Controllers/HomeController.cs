@@ -50,7 +50,7 @@ namespace Atm.Controllers
             catch (Exception ex)
             {
                 _logger.LogError(ex, "Error en {1}.{2}({3}): ", nameof(HomeController), nameof(CardPin), cardModel.Pin);
-                return BadRequest(new CardNumberResultModel
+                return BadRequest(new CardPinResultModel
                 {
                     IsValid = false,
                     Message = "Error al consultar los datos. Intente más tarde."

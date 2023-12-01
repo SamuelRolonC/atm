@@ -1,8 +1,12 @@
+using Core;
 using Core.Interfaces.Repositories;
 using Core.Interfaces.Services;
+using Infraestructure.Data;
 using Infraestructure.Repositories;
+using Microsoft.EntityFrameworkCore;
 using Serilog;
 using Service;
+using System.Diagnostics.CodeAnalysis;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -19,11 +23,11 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-builder.Services.AddTransient<Core.Interfaces.Repositories.ICardRepository, CardRepository>();
+builder.Services.AddTransient<ICardRepository, CardRepository>();
 builder.Services.AddTransient<IOperationRepository, OperationRepository>();
 builder.Services.AddTransient<IOperationTypeRepository, OperationTypeRepository>();
 
-builder.Services.AddScoped<Core.Interfaces.Services.ICardService, CardService>();
+builder.Services.AddScoped<ICardService, CardService>();
 builder.Services.AddScoped<IOperationService, OperationService>();
 
 builder.Services.AddCors(o => o.AddPolicy("NoCors", builder =>
@@ -33,7 +37,8 @@ builder.Services.AddCors(o => o.AddPolicy("NoCors", builder =>
            .AllowAnyHeader();
 }));
 
-builder.Configuration.GetConnectionString("AtmContext");
+builder.Services.AddDbContext<AtmContext>(options =>
+    options.UseSqlServer(builder.Configuration.GetConnectionString(SystemParameters.ConnectionString.AtmContext)));
 
 var app = builder.Build();
 
@@ -53,3 +58,8 @@ app.UseAuthorization();
 app.MapControllers();
 
 app.Run();
+
+[ExcludeFromCodeCoverage]
+public partial class  Program
+{
+}

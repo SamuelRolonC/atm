@@ -2,6 +2,7 @@
 using Core.Entities;
 using Core.Interfaces.Repositories;
 using Core.Models;
+using Core.Utils;
 using Infraestructure.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
@@ -11,18 +12,20 @@ namespace Infraestructure.Repositories
     public class OperationRepository : IOperationRepository
     {
         private readonly ILogger<OperationRepository> _logger;
+        private readonly AtmContext _context;
 
-        public OperationRepository(ILogger<OperationRepository> logger)
+        public OperationRepository(ILogger<OperationRepository> logger
+            , AtmContext context)
         {
             _logger = logger;
+            _context = context;
         }
 
         public async Task<BalanceResultModel> BalanceAsync(int cardId)
         {
             try
             {
-                using var context = new AtmContext();
-                var card = await context.Cards.FirstOrDefaultAsync(c => c.Id == cardId);
+                var card = await _context.Cards.FirstOrDefaultAsync(c => c.Id == cardId);
 
                 return new BalanceResultModel
                 {
@@ -45,12 +48,11 @@ namespace Infraestructure.Repositories
 
         public async Task<WithdrawResultModel> WithdrawAsync(int cardId, decimal amount)
         {
-            using var context = new AtmContext();
-            using var transaction = context.Database.BeginTransaction();
+            using var transaction = _context.Database.BeginTransaction();
 
             try
             {
-                var operationType = await context.OperationTypes.FirstOrDefaultAsync(o => o.Code == SystemParameters.OperationType.Withdrawal);
+                var operationType = await _context.OperationTypes.FirstOrDefaultAsync(o => o.Code == SystemParameters.OperationType.Withdrawal);
                 if (operationType == null)
                     throw new Exception($"{nameof(OperationType)} {SystemParameters.OperationType.Withdrawal} not found.");
 
@@ -61,19 +63,19 @@ namespace Infraestructure.Repositories
                     DateTime = DateTime.Now,
                     OperationTypeId = operationType.Id
                 };
-                await context.Operations.AddAsync(operation);
-                await context.SaveChangesAsync();
+                await _context.Operations.AddAsync(operation);
+                await _context.SaveChangesAsync();
 
                 if (operation == null || operation.Id == 0)
                     throw new Exception($"Error occured while creating an {nameof(Operation)}.");
 
-                var card = await context.Cards.AsTracking().FirstOrDefaultAsync(c => c.Id == cardId && c.Active && !c.IsBlocked);
+                var card = await _context.Cards.AsTracking().FirstOrDefaultAsync(c => c.Id == cardId && c.Active && !c.IsBlocked);
                 if (card == null || card.Id == 0)
                     throw new Exception($"{nameof(Card)} {cardId} not found.");
 
                 card.Balance -= amount;
-                context.Cards.Update(card);
-                await context.SaveChangesAsync();
+                _context.Cards.Update(card);
+                await _context.SaveChangesAsync();
 
                 transaction.Commit();
 
@@ -82,7 +84,7 @@ namespace Infraestructure.Repositories
                     CardBalance = card.Balance,
                     CardNumber = card.Number,
                     OperationAmount = operation.Amount ?? 0,
-                    OperationDate = operation.DateTime,
+                    OperationDate = Functions.GetDateTimeString(operation.DateTime),
                     Success = true,
                     Message = string.Empty
                 };
